@@ -1,42 +1,40 @@
 {
-  "name": "node-typescript-boilerplate",
+  "name": "content-translator",
   "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "description": "Simple translating app in Typescript",
   "engineStrict": true,
   "engines": {
     "node": ">= 8.9.0"
   },
+  "main": "server/index.js",
+  "scripts": {
+    "clean": "rm -rf ./built",
+    "copy-json": "cd server && find . -name '*.json' -type f -exec rsync -R {} ../built \\;",
+    "copy-html": "cd server && find . -name '*.html' -type f -exec rsync -R {} ../built \\;",
+    "build": "npm run clean && tsc && npm run copy-json && npm run copy-html",
+    "start": "npm run build && node built/src/index.js",
+    "test": "npm run lint && npm run build && jest",
+    "lint": "tslint -c tslint.json --fix -p tsconfig.json './server/**/*.ts'",
+    "watch": "npm run build && node built/src/index.js && nodemon --watch server/**/* -e ts,json,html"
+  },
+  "dependencies": {
+    "@google-cloud/translate": "^1.1.0",
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "tslib": "~1.9.0"
+  },
   "devDependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.11.1",
     "@types/jest": "~22.1.1",
     "@types/node": "~8.5.10",
     "jest": "~22.1.4",
     "rimraf": "~2.6.2",
+    "ts-node": "^4.1.0",
     "tslint": "~5.9.1",
-    "tslint-microsoft-contrib": "~5.0.2",
-    "tsutils": "~2.21.0",
-    "typescript": "~2.7.1"
-  },
-  "scripts": {
-    "clean": "rimraf coverage build tmp",
-    "build": "tsc -p tsconfig.release.json",
-    "watch": "tsc -w -p tsconfig.release.json",
-    "lint": "tslint -t stylish --project \"tsconfig.json\"",
-    "pretest": "npm run lint",
-    "test": "npm run test-only",
-    "test-only": "jest --coverage",
-    "test:watch": "jest --watch"
-  },
-  "author": "Jakub Synowiec <github@jakubsynowiec.info>",
-  "license": "APLv2",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jsynowiec/node-typescript-boilerplate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jsynowiec/node-typescript-boilerplate/issues"
-  },
-  "homepage": "https://github.com/jsynowiec/node-typescript-boilerplate#readme",
-  "dependencies": {
-    "tslib": "~1.9.0"
+    "tslint-config-standard": "^7.0.0",
+    "typescript": "~2.7.1",
+    "typescript-standard": "^0.3.30"
   }
 }

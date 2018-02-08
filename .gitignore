@@ -25,5 +25,8 @@ build/
 # Optional eslint cache
 .eslintcache
 
+# Secrets
+secretKey.js
+
 # Misc
 .DS_Store

@@ -1,0 +1,41 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type='text/javascript' src='secretKey.js'></script>
+</head>
+
+<h1>Translator</h1>
+
+    <form action="/" method="post">
+        To translate:</br>
+        <textarea rows="4" cols="50" name="toTranslate" id="toTranslate"></textarea>
+              <input type="button" id="submit" value="submit">
+    </form>
+
+    <h1>Translated</h1>
+    <div id="content"></div>
+    <div id="result"></div>
+
+    <script>
+            $("#submit").click(() => {
+                const toTranslate = $("#toTranslate").val()
+                console.log("<<<<<< ", toTranslate)
+
+                const apiKey = secretKey.apiKey
+                
+                const translating = $.post('https://translation.googleapis.com/language/translate/v2', {
+                  q: toTranslate,
+                  target: 'fr',
+                  key: apiKey
+                }, (data) => {
+                  console.log(">>>>>>>> ", data)
+                }, "json")
+
+               translating.done((data) => {
+                 const results = data.data.translations[0].translatedText
+                 $('#result').empty().append(results)
+               }) 
+            })
+    </script>
+
+
+
